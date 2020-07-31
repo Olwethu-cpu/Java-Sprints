@@ -6,12 +6,15 @@
 package bankingsprint;
 
 public class BankingInterface extends javax.swing.JFrame {
+    
+    public static double balance = 2000;
 
     /**
      * Creates new form BankingInterface
      */
     public BankingInterface() {
         initComponents();
+        tfBalances.setText(String.valueOf(balance));
     }
 
     /**
@@ -39,8 +42,18 @@ public class BankingInterface extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnWithdraw.setText("Withdraw");
+        btnWithdraw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnWithdrawActionPerformed(evt);
+            }
+        });
 
         btnDeposit.setText("Deposit");
+        btnDeposit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDepositActionPerformed(evt);
+            }
+        });
 
         tfDeposit.setText("0");
 
@@ -175,6 +188,33 @@ public class BankingInterface extends javax.swing.JFrame {
         TaxForecast fore = new TaxForecast();
         fore.setVisible(true);
     }//GEN-LAST:event_btnTaxActionPerformed
+
+    private void btnDepositActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDepositActionPerformed
+        
+        double value = 0;
+        
+        try {
+            value = Double.valueOf(tfDeposit.getText());
+        } catch (Exception e) {
+        }
+        
+        balance = balance + value;
+        tfBalances.setText(String.valueOf(balance));
+    }//GEN-LAST:event_btnDepositActionPerformed
+
+    private void btnWithdrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWithdrawActionPerformed
+        // TODO add your handling code here:
+        
+        double value = 0;
+        
+        try {
+            value = Double.valueOf(tfWithdraw.getText());
+        } catch (Exception e) {
+        }
+        
+        balance = balance - value;
+        tfBalances.setText(String.valueOf(balance));
+    }//GEN-LAST:event_btnWithdrawActionPerformed
 
     /**
      * @param args the command line arguments
