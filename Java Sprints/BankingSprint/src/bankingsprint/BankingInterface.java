@@ -64,6 +64,11 @@ public class BankingInterface extends javax.swing.JFrame {
         });
 
         btnTax.setText("Calculate");
+        btnTax.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTaxActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabel2.setText("Financial Calculator");
@@ -165,6 +170,11 @@ public class BankingInterface extends javax.swing.JFrame {
     private void tfBalancesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfBalancesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfBalancesActionPerformed
+
+    private void btnTaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaxActionPerformed
+        TaxForecast fore = new TaxForecast();
+        fore.setVisible(true);
+    }//GEN-LAST:event_btnTaxActionPerformed
 
     /**
      * @param args the command line arguments
