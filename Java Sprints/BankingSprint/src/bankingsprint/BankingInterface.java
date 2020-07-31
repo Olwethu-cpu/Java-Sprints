@@ -5,10 +5,6 @@
  */
 package bankingsprint;
 
-/**
- *
- * @author John
- */
 public class BankingInterface extends javax.swing.JFrame {
 
     /**
@@ -36,7 +32,6 @@ public class BankingInterface extends javax.swing.JFrame {
         tfBalances = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         btnFinancial = new javax.swing.JButton();
-        tfFinancial = new javax.swing.JTextField();
         btnTax = new javax.swing.JButton();
         tfTax = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -60,11 +55,9 @@ public class BankingInterface extends javax.swing.JFrame {
         jLabel1.setText("Transactions");
 
         btnFinancial.setText("Calculate");
-
-        tfFinancial.setText("0");
-        tfFinancial.addActionListener(new java.awt.event.ActionListener() {
+        btnFinancial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfFinancialActionPerformed(evt);
+                btnFinancialActionPerformed(evt);
             }
         });
 
@@ -92,7 +85,7 @@ public class BankingInterface extends javax.swing.JFrame {
                                     .addComponent(btnDeposit)
                                     .addComponent(btnBalances)
                                     .addComponent(btnWithdraw))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(btnFinancial)
@@ -112,9 +105,7 @@ public class BankingInterface extends javax.swing.JFrame {
                                     .addComponent(tfBalances, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(24, 24, 24))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tfFinancial, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addComponent(tfTax, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
@@ -149,9 +140,7 @@ public class BankingInterface extends javax.swing.JFrame {
                     .addComponent(btnFinancial)
                     .addComponent(btnTax))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(tfFinancial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(tfTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17))
         );
 
@@ -172,9 +161,10 @@ public class BankingInterface extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tfFinancialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfFinancialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfFinancialActionPerformed
+    private void btnFinancialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinancialActionPerformed
+        Calculator.createWindow();
+       
+    }//GEN-LAST:event_btnFinancialActionPerformed
 
     /**
      * @param args the command line arguments
@@ -223,7 +213,6 @@ public class BankingInterface extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField tfBalances;
     private javax.swing.JTextField tfDeposit;
-    private javax.swing.JTextField tfFinancial;
     private javax.swing.JTextField tfTax;
     private javax.swing.JTextField tfWithdraw;
     // End of variables declaration//GEN-END:variables
