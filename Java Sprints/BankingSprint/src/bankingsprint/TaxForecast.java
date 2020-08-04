@@ -5,10 +5,6 @@
  */
 package bankingsprint;
 
-/**
- *
- * @author John
- */
 public class TaxForecast extends javax.swing.JFrame {
     
     

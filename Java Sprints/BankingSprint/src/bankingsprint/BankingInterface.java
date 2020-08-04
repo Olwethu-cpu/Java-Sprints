@@ -5,15 +5,30 @@
  */
 package bankingsprint;
 
+import java.util.Iterator;
+import java.util.List;
+import javax.swing.JOptionPane;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
+
 public class BankingInterface extends javax.swing.JFrame {
     
     public static double balance = 2000;
+    public static int userID = 0;
+     private static SessionFactory factory;
 
     /**
      * Creates new form BankingInterface
      */
     public BankingInterface() {
         initComponents();
+        viewBalance();
         tfBalances.setText(String.valueOf(balance));
     }
 
@@ -39,7 +54,7 @@ public class BankingInterface extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnWithdraw.setText("Withdraw");
         btnWithdraw.addActionListener(new java.awt.event.ActionListener() {
@@ -199,6 +214,7 @@ public class BankingInterface extends javax.swing.JFrame {
         }
         
         balance = balance + value;
+        upDATE();
         tfBalances.setText(String.valueOf(balance));
     }//GEN-LAST:event_btnDepositActionPerformed
 
@@ -213,6 +229,7 @@ public class BankingInterface extends javax.swing.JFrame {
         }
         
         balance = balance - value;
+        upDATE();
         tfBalances.setText(String.valueOf(balance));
     }//GEN-LAST:event_btnWithdrawActionPerformed
 
@@ -265,4 +282,167 @@ public class BankingInterface extends javax.swing.JFrame {
     private javax.swing.JTextField tfDeposit;
     private javax.swing.JTextField tfWithdraw;
     // End of variables declaration//GEN-END:variables
+
+    public static void logIN(String userName, String passWord) {
+        
+        
+        try {
+        factory = new Configuration().configure().buildSessionFactory();
+                
+                Session session = factory.openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+
+            Criteria crit = null;
+            List stuff = null;
+            
+            
+        
+                    crit = session.createCriteria(POJOS.Accounts.class);
+                    crit.add(Restrictions.eq("username", userName));
+                    crit.add(Restrictions.eq("password", passWord));
+                    
+                    stuff = crit.list();
+                    if (stuff.size() > 0) {
+                        for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
+                            POJOS.Accounts acc = (POJOS.Accounts) iterator.next();
+                           userID = acc.getId() ; 
+                        
+                        }
+                       
+                        BankingInterface bank = new BankingInterface();
+                        bank.setVisible(true);
+                    
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Invalid login credentials.");
+                    }}
+        
+        catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }//JOptionPane.showMessageDialog(null, "Invalid username", "Access Denied", 0);
+                
+            } catch (Throwable ex) {
+                System.err.println("An Error has occurred");
+                throw new ExceptionInInitializerError(ex);
+            }
+    
+    }
+    
+    public static void viewBalance() {
+    
+        try {
+        factory = new Configuration().configure().buildSessionFactory();
+                
+                Session session = factory.openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            
+            POJOS.Accounts acc = (POJOS.Accounts) session.get(POJOS.Accounts.class, userID);
+                    balance = acc.getBalance();
+                    tx.commit();
+        }  catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }//JOptionPane.showMessageDialog(null, "Invalid username", "Access Denied", 0);
+                
+            } catch (Throwable ex) {
+                System.err.println("An Error has occurred");
+                throw new ExceptionInInitializerError(ex);
+            }
+        
+    }
+    
+    public static void upDATE() {
+        try {
+        factory = new Configuration().configure().buildSessionFactory();
+                
+                Session session = factory.openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            
+            POJOS.Accounts acc = (POJOS.Accounts) session.get(POJOS.Accounts.class, userID);
+                    acc.setBalance(balance);
+                    tx.commit();
+        }  catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }//JOptionPane.showMessageDialog(null, "Invalid username", "Access Denied", 0);
+                
+            } catch (Throwable ex) {
+                System.err.println("An Error has occurred");
+                throw new ExceptionInInitializerError(ex);
+            }
+    }
+    
+    public static void inSERT(String iD, String uSernAme, String pAsswOrd, String bAlance, String nAme) {
+        
+        try {
+        factory = new Configuration().configure().buildSessionFactory();
+                
+                Session session = factory.openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            
+            //int idNum = 0;
+            //String userName = "";
+            //String passWord = "";
+            //double balance = 0;
+            //String name = "";
+            
+           
+                 int idNum = Integer.valueOf(iD);
+                 String userName = uSernAme;
+                 String passWord = pAsswOrd;
+                 double balance = Integer.valueOf(bAlance);
+                 String name = nAme;
+            
+            
+            POJOS.Accounts acc = new POJOS.Accounts(idNum, userName, passWord, balance, name);
+                    //acc.setBalance(balance);
+                    
+                    
+            
+                    session.save(acc);
+                    tx.commit();
+                    
+                    JOptionPane.showMessageDialog(null, "Account successfully created.");
+                    
+        }  catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }//JOptionPane.showMessageDialog(null, "Invalid username", "Access Denied", 0);
+                
+            } catch (Throwable ex) {
+                System.err.println("An Error has occurred");
+                throw new ExceptionInInitializerError(ex);
+            }
+    
+    }
+
+
 }
