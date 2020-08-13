@@ -1,0 +1,7 @@
+ 
+ Customer ID: 1 
+ Name: Tristan Holloway 
+ Movie: Avengers: Infinity War 
+ Cinema: c3 
+ Seat: C6
+ Time: 19:00
