@@ -39,7 +39,7 @@ CREATE TABLE `bookings` (
   CONSTRAINT `Cinema` FOREIGN KEY (`cinema`) REFERENCES `cinema` (`cinemaID`),
   CONSTRAINT `Customer` FOREIGN KEY (`customer`) REFERENCES `customers` (`customerID`) ON DELETE CASCADE,
   CONSTRAINT `Movie` FOREIGN KEY (`movie`) REFERENCES `movies` (`movieID`)
-) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +48,7 @@ CREATE TABLE `bookings` (
 
 LOCK TABLES `bookings` WRITE;
 /*!40000 ALTER TABLE `bookings` DISABLE KEYS */;
-INSERT INTO `bookings` VALUES (3,3,2,1,'11:30','E4'),(17,14,2,2,'09:00','A7'),(18,14,2,2,'14:00','A7'),(19,14,5,1,'09:00','F4'),(20,14,1,2,'16:30','F4'),(24,14,1,2,'16:30','F5'),(25,14,1,2,'16:30','F6'),(28,14,1,1,'09:00','D7'),(29,14,1,1,'09:00','D8'),(30,13,1,1,'09:00','A1'),(31,13,1,1,'09:00','E4'),(36,14,2,2,'09:00','A6'),(37,13,4,2,'16:30','D5'),(38,13,2,2,'09:00','E7'),(39,13,3,2,'09:00','A8'),(40,8,1,1,'09:00','E5'),(41,8,27,4,'19:00','A4'),(42,8,2,5,'11:30','F6'),(43,8,1,1,'11:30','A1'),(44,8,1,1,'09:00','B1'),(45,8,6,4,'14:00','A1'),(46,8,12,7,'19:00','E4'),(50,3,1,1,'09:00','E2'),(51,3,8,1,'09:00','A1'),(52,3,2,1,'14:00','E5'),(53,3,1,1,'09:00','A4'),(54,9,6,3,'11:30','F2'),(56,9,6,1,'11:30','F2'),(57,5,19,3,'14:00','E2'),(58,5,19,3,'14:00','E1'),(59,3,1,1,'09:00','A5'),(61,3,1,1,'09:00','A3'),(62,8,1,3,'11:30','C3');
+INSERT INTO `bookings` VALUES (3,3,1,2,'09:00','A1'),(17,14,2,2,'09:00','A7'),(18,14,2,2,'14:00','B1'),(19,14,5,1,'09:00','F4'),(20,14,1,2,'16:30','F4'),(24,14,1,2,'16:30','F5'),(25,14,1,2,'16:30','F6'),(28,14,1,1,'09:00','D7'),(29,14,1,1,'09:00','D8'),(30,13,1,1,'09:00','A1'),(31,13,1,1,'09:00','E4'),(36,14,2,2,'09:00','A6'),(37,13,4,2,'16:30','D5'),(38,13,2,2,'09:00','E7'),(39,13,3,2,'09:00','A8'),(40,8,1,1,'09:00','E5'),(41,8,27,4,'19:00','A4'),(42,8,2,5,'11:30','F6'),(43,8,1,1,'11:30','A1'),(44,8,1,1,'09:00','B1'),(45,8,6,4,'14:00','A1'),(46,8,12,7,'19:00','E4'),(50,3,1,1,'09:00','E2'),(51,3,8,1,'09:00','A1'),(52,3,2,1,'14:00','E5'),(53,3,1,1,'09:00','A4'),(54,9,6,3,'11:30','F2'),(56,9,6,1,'11:30','F2'),(57,5,19,3,'14:00','E2'),(58,5,19,3,'14:00','E1'),(59,3,1,1,'09:00','A5'),(61,3,1,1,'09:00','A3'),(62,8,1,3,'11:30','C3'),(92,8,1,1,'09:00','B3'),(93,2,1,3,'09:00','A1'),(95,4,1,1,'09:00','A2'),(96,4,1,1,'09:00','A10'),(97,4,1,1,'09:00','C9'),(98,3,1,2,'09:00','A4'),(99,4,6,7,'16:30','A3'),(100,3,1,3,'09:00','A3'),(101,3,1,5,'09:00','A1'),(102,3,1,6,'09:00','B1'),(103,3,1,4,'09:00','A3'),(104,3,1,7,'09:00','A1'),(107,4,1,1,'09:00','A6');
 /*!40000 ALTER TABLE `bookings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -102,7 +102,7 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-INSERT INTO `customers` VALUES (2,'Kelebogile Mhlongo','km','km'),(3,'NAME','PssWord','UserName'),(4,'Asanda Nieuwoudt','an','an'),(5,'Takalani Erasmus','te','te'),(6,'Gugu Turner','gt','gt'),(7,'Teboho Ncube','tn','tn'),(8,'Jabulani Sibiya','js','js'),(9,'Yolandi van der Westhuizen','yw','yw'),(10,'Kelebogile Nair','kn','kn'),(11,'Nosipho Stevens','ns','ns'),(12,'Michael van Deventer','md','md'),(13,'Victoria Msomi','vm','vm'),(14,'Sizwe Rikhotso','sr','sr'),(15,'Phindile Robinson','pr','pr');
+INSERT INTO `customers` VALUES (2,'Kelebogile Mhlongo','km','km'),(3,'Tristan Holloway','th','th'),(4,'Asanda Nieuwoudt','an','an'),(5,'Takalani Erasmus','te','te'),(6,'Gugu Turner','gt','gt'),(7,'Teboho Ncube','tn','tn'),(8,'Jabulani Sibiya','js','js'),(9,'Yolandi van der Westhuizen','yw','yw'),(10,'Kelebogile Nair','kn','kn'),(11,'Nosipho Stevens','ns','ns'),(12,'Michael van Deventer','md','md'),(13,'Victoria Msomi','vm','vm'),(14,'Sizwe Rikhotso','sr','sr'),(15,'Phindile Robinson','pr','pr');
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -157,7 +157,7 @@ CREATE TABLE `movies` (
 
 LOCK TABLES `movies` WRITE;
 /*!40000 ALTER TABLE `movies` DISABLE KEYS */;
-INSERT INTO `movies` VALUES (1,'Aquaman','Action'),(2,'The Simpsons','Comedy'),(3,'Jumanji','Adventure'),(4,'Sherlock Holmes','Mystery'),(5,'Avengers: Infinity War','Action'),(6,'Black Panther','Action'),(7,'Deadpool 2','Comedy'),(8,'Jurassic World: Fallen Kingdom','Sci-Fi'),(9,'The Meg','Horror'),(10,'Venom','Action'),(11,'Mission: Impossible - Fallout','Thriller'),(12,'Ready Player One','Adventure'),(13,'The Incredibles 2','Animation'),(14,'Bohemian Rhapsody','Biography'),(15,'Ant-Man and the Wasp','Action'),(16,'Solo: A Star Wars Story','Sci-Fi'),(17,'A Quiet Place','Horror'),(18,'The Predator','Adventure'),(19,'Fantastic Beasts: The Crimes of Grindelwald','Fantasy'),(20,'A Star Is Born','Music'),(21,'The Nun','Horror'),(22,'Halloween','Horror'),(23,'Ocean\'s Eight','Comedy'),(24,'Tomb Raider','Fantasy'),(25,'Red Sparrow','Thriller'),(26,'A Simple Favour','Comedy'),(27,'Rampage','Adventure'),(28,'Pacific Rim: Uprising','Sci-Fi'),(29,'The Equalizer 2','Crime'),(30,'Sicario 2: Soldado','Action'),(31,'Game Night','Comedy'),(32,'The Cloverfield Paradox','Horror'),(33,'First Man','Biography'),(34,'Skyscraper','Thriller'),(35,'Tag','Comedy'),(36,'The Ballad of Buster Scruggs','Music'),(37,'Outlaw King','Biography'),(38,'A Wrinkle in Time','Family'),(39,'Christopher Robin','Family'),(40,'Hotel Transylvania 3','Animation');
+INSERT INTO `movies` VALUES (1,'Aquaman','Action'),(2,'The Simpsons','Comedy'),(3,'Jumanji','Adventure'),(4,'Sherlock Holmes','Mystery'),(5,'Avengers: Infinity War','Action'),(6,'Black Panther','Action'),(7,'Deadpool 2','Comedy'),(8,'Jurassic World: Fallen Kingdom','Sci-Fi'),(9,'The Meg','Horror'),(10,'Venom','Action'),(11,'Mission: Impossible - Fallout','Thriller'),(12,'Ready Player One','Adventure'),(13,'The Incredibles 2','Animation'),(14,'Bohemian Rhapsody','Biography'),(15,'Ant-Man and the Wasp','Action'),(16,'Solo: A Star Wars Story','Sci-Fi'),(17,'A Quiet Place','Horror'),(18,'The Predator','Adventure'),(19,'Fantastic Beasts: The Crimes of Grindelwald','Fantasy'),(20,'A Star Is Born','Music'),(21,'The Nun','Horror'),(22,'Halloween','Horror'),(23,'Ocean\'s Eight','Comedy'),(24,'Tomb Raider','Fantasy'),(25,'Red Sparrow','Thriller'),(26,'A Simple Favour','Romance'),(27,'Rampage','Adventure'),(28,'Pacific Rim: Uprising','Sci-Fi'),(29,'The Equalizer 2','Crime'),(30,'Sicario 2: Soldado','Action'),(31,'Game Night','Comedy'),(32,'The Cloverfield Paradox','Horror'),(33,'First Man','Biography'),(34,'Skyscraper','Thriller'),(35,'Tag','Comedy'),(36,'The Ballad of Buster Scruggs','Music'),(37,'Outlaw King','Biography'),(38,'A Wrinkle in Time','Family'),(39,'Christopher Robin','Family'),(40,'Hotel Transylvania 3','Animation');
 /*!40000 ALTER TABLE `movies` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -170,4 +170,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-13 19:45:06
+-- Dump completed on 2020-08-14 11:10:05

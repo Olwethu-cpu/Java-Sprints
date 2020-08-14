@@ -36,6 +36,9 @@ public class Choices extends javax.swing.JFrame {
         boxCinema();
         chosen();
         
+        btnExportReceipt.setVisible(false);
+        
+        
   
     }
 
@@ -117,6 +120,11 @@ public class Choices extends javax.swing.JFrame {
         cmbSeat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "E10", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10" }));
 
         btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -223,6 +231,8 @@ public class Choices extends javax.swing.JFrame {
                 
             
                         insert();
+                        btnExportReceipt.setVisible(true);    
+                        
                         if (BookingSystem.choice == "Movies") {  
                             moviesShow(); 
                         }
@@ -241,14 +251,15 @@ public class Choices extends javax.swing.JFrame {
                                         BookingSystem.printAll();
                                     } else {
                                         BookingSystem.printBookings(Integer.valueOf(BookingSystem.cmbCustomer.getSelectedItem().toString())); 
-                                    
+                                        
                                     
                                     }} else {
             BookingSystem.printBookings(BookingSystem.userID); 
+            
         }
                                 
 
-                           
+                       
                             
                     break;  
 
@@ -289,6 +300,10 @@ default:JOptionPane.showMessageDialog(null, "Fail");
     private void btnExportReceiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportReceiptActionPerformed
         export(receipt);
     }//GEN-LAST:event_btnExportReceiptActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnBackActionPerformed
 
     /**
      * @param args the command line arguments
