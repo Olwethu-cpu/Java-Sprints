@@ -1,7 +1,7 @@
  
- Customer ID: 1 
+ Customer ID: 3 
  Name: Tristan Holloway 
- Movie: Avengers: Infinity War 
- Cinema: c3 
- Seat: C6
- Time: 19:00
+ Movie: Jumanji 
+ Cinema: Nu Metro 1 
+ Seat: A1
+ Time: 09:00

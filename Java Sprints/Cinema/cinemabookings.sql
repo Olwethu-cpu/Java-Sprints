@@ -36,10 +36,10 @@ CREATE TABLE `bookings` (
   KEY `cinema_idx` (`cinema`),
   KEY `Movie_idx` (`movie`),
   KEY `Customer_idx` (`customer`) /*!80000 INVISIBLE */,
-  CONSTRAINT `Cinema` FOREIGN KEY (`cinema`) REFERENCES `cinema` (`cinemaID`),
+  CONSTRAINT `Cinema` FOREIGN KEY (`cinema`) REFERENCES `cinema` (`cinemaID`) ON UPDATE CASCADE,
   CONSTRAINT `Customer` FOREIGN KEY (`customer`) REFERENCES `customers` (`customerID`) ON DELETE CASCADE,
   CONSTRAINT `Movie` FOREIGN KEY (`movie`) REFERENCES `movies` (`movieID`)
-) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +48,7 @@ CREATE TABLE `bookings` (
 
 LOCK TABLES `bookings` WRITE;
 /*!40000 ALTER TABLE `bookings` DISABLE KEYS */;
-INSERT INTO `bookings` VALUES (3,3,1,2,'09:00','A1'),(17,14,2,2,'09:00','A7'),(18,14,2,2,'14:00','B1'),(19,14,5,1,'09:00','F4'),(20,14,1,2,'16:30','F4'),(24,14,1,2,'16:30','F5'),(25,14,1,2,'16:30','F6'),(28,14,1,1,'09:00','D7'),(29,14,1,1,'09:00','D8'),(30,13,1,1,'09:00','A1'),(31,13,1,1,'09:00','E4'),(36,14,2,2,'09:00','A6'),(37,13,4,2,'16:30','D5'),(38,13,2,2,'09:00','E7'),(39,13,3,2,'09:00','A8'),(40,8,1,1,'09:00','E5'),(41,8,27,4,'19:00','A4'),(42,8,2,5,'11:30','F6'),(43,8,1,1,'11:30','A1'),(44,8,1,1,'09:00','B1'),(45,8,6,4,'14:00','A1'),(46,8,12,7,'19:00','E4'),(50,3,1,1,'09:00','E2'),(51,3,8,1,'09:00','A1'),(52,3,2,1,'14:00','E5'),(53,3,1,1,'09:00','A4'),(54,9,6,3,'11:30','F2'),(56,9,6,1,'11:30','F2'),(57,5,19,3,'14:00','E2'),(58,5,19,3,'14:00','E1'),(59,3,1,1,'09:00','A5'),(61,3,1,1,'09:00','A3'),(62,8,1,3,'11:30','C3'),(92,8,1,1,'09:00','B3'),(93,2,1,3,'09:00','A1'),(95,4,1,1,'09:00','A2'),(96,4,1,1,'09:00','A10'),(97,4,1,1,'09:00','C9'),(98,3,1,2,'09:00','A4'),(99,4,6,7,'16:30','A3'),(100,3,1,3,'09:00','A3'),(101,3,1,5,'09:00','A1'),(102,3,1,6,'09:00','B1'),(103,3,1,4,'09:00','A3'),(104,3,1,7,'09:00','A1'),(107,4,1,1,'09:00','A6');
+INSERT INTO `bookings` VALUES (3,3,1,2,'09:00','A1'),(17,14,2,2,'09:00','A7'),(18,14,2,2,'14:00','B1'),(19,14,5,1,'09:00','F4'),(20,14,1,2,'16:30','F4'),(24,14,2,2,'16:30','F5'),(25,14,1,2,'16:30','F6'),(28,14,1,1,'09:00','D7'),(29,14,1,1,'09:00','D8'),(30,13,1,1,'09:00','A1'),(31,13,1,1,'09:00','E4'),(36,14,2,2,'09:00','A6'),(37,13,4,2,'16:30','D5'),(38,13,2,2,'09:00','E7'),(39,13,3,2,'09:00','A8'),(40,8,1,1,'09:00','E5'),(41,8,27,4,'19:00','A4'),(42,8,2,5,'11:30','F6'),(43,8,1,1,'11:30','A1'),(44,8,1,1,'09:00','B1'),(45,8,6,4,'14:00','A1'),(46,8,12,7,'19:00','E4'),(50,3,1,1,'09:00','E2'),(51,3,8,1,'09:00','A1'),(52,3,2,1,'14:00','E5'),(53,3,1,1,'09:00','A4'),(54,9,6,3,'11:30','F2'),(56,9,6,1,'11:30','F3'),(57,5,19,3,'14:00','E2'),(58,5,19,3,'14:00','E1'),(59,3,1,1,'09:00','A5'),(61,3,1,1,'09:00','A3'),(62,8,1,3,'11:30','C3'),(92,8,1,1,'09:00','B3'),(93,2,1,3,'09:00','A1'),(95,4,1,1,'09:00','A2'),(97,4,1,1,'09:00','C9'),(98,3,1,2,'09:00','A4'),(99,4,6,7,'16:30','A3'),(100,3,1,3,'09:00','A3'),(101,3,1,5,'09:00','A1'),(102,3,1,6,'09:00','B1'),(103,3,1,4,'09:00','A3'),(104,3,1,7,'09:00','A1'),(107,4,1,1,'09:00','A6'),(108,6,3,2,'09:00','A1'),(125,6,1,1,'09:00','A8'),(126,5,4,1,'09:00','A1'),(127,6,5,1,'09:00','A1'),(128,8,8,1,'09:00','A5');
 /*!40000 ALTER TABLE `bookings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,10 +62,9 @@ DROP TABLE IF EXISTS `cinema`;
 CREATE TABLE `cinema` (
   `cinemaID` int NOT NULL,
   `name` varchar(45) NOT NULL,
-  `province` int NOT NULL,
+  `province` varchar(45) NOT NULL,
   `location` varchar(45) NOT NULL,
-  PRIMARY KEY (`cinemaID`),
-  UNIQUE KEY `name_UNIQUE` (`name`)
+  PRIMARY KEY (`cinemaID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -75,7 +74,7 @@ CREATE TABLE `cinema` (
 
 LOCK TABLES `cinema` WRITE;
 /*!40000 ALTER TABLE `cinema` DISABLE KEYS */;
-INSERT INTO `cinema` VALUES (1,'c1',1,'Bellville'),(2,'c2',2,'Natashafontein'),(3,'c3',3,'Nicolatown'),(4,'c4',4,'Nkululekobury'),(5,'c5',5,'Natashafontein'),(6,'c6',6,'Thembi'),(7,'c7',7,'Francis'),(8,'c8',1,'Lindashire'),(9,'c9',2,'Bothmaburgh'),(10,'c10',3,'Scottchester'),(11,'c11',4,'Abrahamton'),(12,'c12',5,'Lubbeside'),(13,'c13',6,'Nieuwoudtton'),(14,'c14',7,'Takalanihaven'),(15,'c15',1,'Thembifontein'),(16,'c16',2,'Unathiland'),(17,'c17',3,'Tarynbury'),(18,'c18',4,'Thembaside'),(19,'c19',5,'Pierrestad'),(20,'c20',6,'Siphiweville'),(21,'c21',7,'Yolandi'),(22,'c22',1,'Jacobsview'),(23,'c23',2,'Charles'),(24,'c24',3,'Barendton'),(25,'c25',4,'Carmenview'),(26,'c26',5,'Liezelbury'),(27,'c27',6,'Parkerport'),(28,'c28',7,'Victorhaven'),(29,'c29',1,'Maakeborough'),(30,'c30',2,'Lizelle'),(31,'c31',3,'Louisport'),(32,'c32',4,'Isaacstad');
+INSERT INTO `cinema` VALUES (1,'Nu Metro 1','WC','Bellville'),(2,'Nu Metro 2','NW','Davisstad'),(3,'Nu Metro 3','MP','North Francis'),(4,'Nu Metro 4','NC','East Chantelle'),(5,'Nu Metro 5','NW','Nonkululekofort'),(6,'Nu Metro 6','EC','Bulelwa'),(7,'Nu Metro 7','KZN','Deborahberg'),(8,'Nu Metro 8','LP','Lake Steven'),(9,'Nu Metro 9','EC','Delportberg'),(10,'Ster-Kinekor 1','WC','Mkhabelatown'),(11,'Ster-Kinekor 2','FS','Anitatown'),(12,'Ster-Kinekor 3','WC','Edwardburgh'),(13,'Ster-Kinekor 4','NC','Ursulamouth'),(14,'Ster-Kinekor 5','NW','Natalieside'),(15,'Ster-Kinekor 6','MP','Willem'),(16,'Ster-Kinekor 7','FS','Itumelengstad'),(17,'Ster-Kinekor 8','NW','Mazibukostad'),(18,'Ster-Kinekor 9','MP','Jacobusburgh'),(19,'Colosseum Theatre 1','WC','Ursulashire'),(20,'Colosseum Theatre 2','NC','Joyce'),(21,'Colosseum Theatre 3','LP','Thembaport'),(22,'Colosseum Theatre 4','LP','East Irene'),(23,'Colosseum Theatre 5','NW','South Simonside'),(24,'Colosseum Theatre 6','NC','Jamesmouth'),(25,'Colosseum Theatre 7','MP','Nthabisengborough'),(26,'Colosseum Theatre 8','NW','Sibusisoport'),(27,'Colosseum Theatre 9','EC','Robland'),(28,'Cine X 1','NW','Swartside'),(29,'Cine X 2','EC','Vincentberg'),(30,'Cine X 3','KZN','Ndoumouth'),(31,'Cine X 4','NC','Tumelo'),(32,'Cine X 5','EC','Madlalaville');
 /*!40000 ALTER TABLE `cinema` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,4 +169,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-14 11:10:05
+-- Dump completed on 2020-08-16 18:19:28

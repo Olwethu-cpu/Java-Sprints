@@ -41,9 +41,9 @@ Contributor(s):
 -->
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="cinemabookings"/>
-  <table-filter match-name="customers"/>
-  <table-filter match-name="movies"/>
   <table-filter match-name="cinema"/>
   <table-filter match-name="bookings"/>
+  <table-filter match-name="customers"/>
+  <table-filter match-name="movies"/>
   <table-filter match-name="managers"/>
 </hibernate-reverse-engineering>

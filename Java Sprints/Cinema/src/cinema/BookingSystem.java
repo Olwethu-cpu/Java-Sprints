@@ -1,10 +1,14 @@
-
 package cinema;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -15,20 +19,20 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
 public class BookingSystem extends javax.swing.JFrame {
-    
+
     public static String balance = "";
     public static String movie = "";
     public static String seat = "";
     public static String choice = "Movies";
     public static String action = Login.action;
-    
+
     public static boolean isManager = true;
-    
+
     public static int userID = Login.userID;
-    
+
     private static String display = "bookings";
-    
-     private static SessionFactory factory;
+
+    private static SessionFactory factory;
 
     /**
      * Creates new form BankingInterface
@@ -36,13 +40,13 @@ public class BookingSystem extends javax.swing.JFrame {
     public BookingSystem() {
         initComponents();
         managerRights();
-        
-        boxCinema();
+
+        customerBox();
         bookingBox();
-        
+
         display = "customers";
         fillBox();
-     
+
     }
 
     /**
@@ -57,7 +61,6 @@ public class BookingSystem extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         btnBookings = new javax.swing.JButton();
         btnMovies = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         cmbOrder = new javax.swing.JComboBox<>();
@@ -70,30 +73,32 @@ public class BookingSystem extends javax.swing.JFrame {
         cmbBookingID = new javax.swing.JComboBox<>();
         lblSort = new javax.swing.JLabel();
         btnLogOff = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(0, 0, 0));
 
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 51, 51), 3, true), "Booking System", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 24), new java.awt.Color(255, 255, 255))); // NOI18N
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        btnBookings.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnBookings.setText("Make Booking");
         btnBookings.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBookingsActionPerformed(evt);
             }
         });
-        jPanel1.add(btnBookings, new org.netbeans.lib.awtextra.AbsoluteConstraints(394, 81, -1, -1));
+        jPanel1.add(btnBookings, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 30, -1, -1));
 
+        btnMovies.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnMovies.setText("View Movies");
         btnMovies.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMoviesActionPerformed(evt);
             }
         });
-        jPanel1.add(btnMovies, new org.netbeans.lib.awtextra.AbsoluteConstraints(216, 81, -1, -1));
-
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
-        jLabel1.setText("Booking System");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(216, 21, 288, 54));
+        jPanel1.add(btnMovies, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 30, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -108,209 +113,228 @@ public class BookingSystem extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 125, 679, 172));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 679, 210));
 
-        cmbOrder.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Booking ID", "Customer ID", "Cinema", "Movie", "Seat" }));
+        cmbOrder.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        cmbOrder.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Booking ID", "Customer ID", "Cinema", "Movie", "Seat", "Province" }));
         cmbOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbOrderActionPerformed(evt);
             }
         });
-        jPanel1.add(cmbOrder, new org.netbeans.lib.awtextra.AbsoluteConstraints(416, 331, -1, -1));
+        jPanel1.add(cmbOrder, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 350, 150, -1));
 
+        btnUpdate.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnUpdate.setText("Update");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
             }
         });
-        jPanel1.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 363, -1, -1));
+        jPanel1.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 380, -1, -1));
 
+        btnDisplay.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnDisplay.setText("Customer Details");
         btnDisplay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDisplayActionPerformed(evt);
             }
         });
-        jPanel1.add(btnDisplay, new org.netbeans.lib.awtextra.AbsoluteConstraints(416, 363, -1, -1));
+        jPanel1.add(btnDisplay, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 380, -1, -1));
 
+        btnDelete.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
             }
         });
-        jPanel1.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(284, 401, -1, -1));
+        jPanel1.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 410, -1, -1));
 
-        lblBookingID.setText("Booking ID");
-        jPanel1.add(lblBookingID, new org.netbeans.lib.awtextra.AbsoluteConstraints(314, 309, -1, -1));
+        lblBookingID.setBackground(new java.awt.Color(255, 255, 255));
+        lblBookingID.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lblBookingID.setForeground(new java.awt.Color(255, 255, 255));
+        lblBookingID.setText("Booking ID:");
+        jPanel1.add(lblBookingID, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 280, -1, -1));
 
+        cmbCustomer.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         cmbCustomer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All" }));
         cmbCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbCustomerActionPerformed(evt);
             }
         });
-        jPanel1.add(cmbCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(207, 331, 101, -1));
+        jPanel1.add(cmbCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 350, 101, -1));
 
-        lblCustomer.setText("Customer ID");
-        jPanel1.add(lblCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(207, 309, -1, -1));
+        lblCustomer.setBackground(new java.awt.Color(255, 255, 255));
+        lblCustomer.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lblCustomer.setForeground(new java.awt.Color(255, 255, 255));
+        lblCustomer.setText("Customer ID:");
+        jPanel1.add(lblCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 330, -1, -1));
 
+        cmbBookingID.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         cmbBookingID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbBookingIDActionPerformed(evt);
             }
         });
-        jPanel1.add(cmbBookingID, new org.netbeans.lib.awtextra.AbsoluteConstraints(314, 331, 70, -1));
+        jPanel1.add(cmbBookingID, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, 130, -1));
 
+        lblSort.setBackground(new java.awt.Color(255, 255, 255));
+        lblSort.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lblSort.setForeground(new java.awt.Color(255, 255, 255));
         lblSort.setText("Sort:");
-        jPanel1.add(lblSort, new org.netbeans.lib.awtextra.AbsoluteConstraints(416, 309, -1, -1));
+        jPanel1.add(lblSort, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 330, -1, -1));
 
+        btnLogOff.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnLogOff.setText("Log Out");
         btnLogOff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLogOffActionPerformed(evt);
             }
         });
-        jPanel1.add(btnLogOff, new org.netbeans.lib.awtextra.AbsoluteConstraints(626, 401, -1, -1));
+        jPanel1.add(btnLogOff, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 380, -1, -1));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cinema/8AbOo6X.jpg"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 680, 410));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 27, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 15, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBookingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookingsActionPerformed
+
+        if (isManager == true) {
+
+            if (cmbCustomer.getSelectedItem().toString().equals("All")) {
+
+                JOptionPane.showMessageDialog(null, "Invalid Customer ID.");
+            } else {
+
+                printBookings(Integer.valueOf(cmbCustomer.getSelectedItem().toString()));
+
+                choice = "Seats";
+
+                Choices choose = new Choices();
+                choose.something = "insert";
+                choose.cmbTime.setSelectedIndex(0);
+                choose.cmbCategory.setSelectedIndex(0);
+                choose.cmbCinema.setSelectedIndex(0);
+                choose.cmbSeat.setSelectedIndex(0);
+                choose.setVisible(true);
+            }
+
+        } else {
+            choice = "Seats";
+
+            Choices choose = new Choices();
+            choose.setVisible(true);
+        }
+
+    }//GEN-LAST:event_btnBookingsActionPerformed
+
     private void btnMoviesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoviesActionPerformed
-        
+
         choice = "Movies";
-        
+
         Choices choose = new Choices();
         choose.something = "insert";
         choose.setVisible(true);
-        
-    }//GEN-LAST:event_btnMoviesActionPerformed
-    
-    private void btnBookingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBookingsActionPerformed
-        
-        if (isManager == true) {
-        
-        if (cmbCustomer.getSelectedItem().toString().equals("All")) {
-                                       
-                                        JOptionPane.showMessageDialog(null, "Invalid Customer ID.");
-                                    } else {
-            
-            
-                                        printBookings(Integer.valueOf(cmbCustomer.getSelectedItem().toString())); 
-                                    
-                                        choice = "Seats";
-                                        
-                                        Choices choose = new Choices();
-                                        choose.setVisible(true);
-                                    }
-        
-        } else {
-            choice = "Seats";
-                                        
-                                        Choices choose = new Choices();
-                                        choose.setVisible(true);
-        }
-        
-        
-    }//GEN-LAST:event_btnBookingsActionPerformed
 
-    private void btnDisplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisplayActionPerformed
-        
-         switch (display) {
-        
-            case "customers":
-                
-                
-                display = "bookings";
-                
-                break;
-            case "bookings": 
-   
-                display = "customers";
-                
-                break;
-            default:
-                    break;
-            
-        }
-        
-        fillBox();
-    }//GEN-LAST:event_btnDisplayActionPerformed
+    }//GEN-LAST:event_btnMoviesActionPerformed
 
     private void cmbOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbOrderActionPerformed
         if (isManager == true) {
             if (cmbCustomer.getSelectedItem().toString().equals("All")) {
                 printAll();
             } else {
-                printBookings(Integer.valueOf(BookingSystem.cmbCustomer.getSelectedItem().toString())); 
-                }
+                printBookings(Integer.valueOf(BookingSystem.cmbCustomer.getSelectedItem().toString()));
+            }
         } else {
-           printBookings(userID); 
+            printBookings(userID);
         }
-        
-        
     }//GEN-LAST:event_cmbOrderActionPerformed
 
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        deleteRecord();
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        
-        
+
         action = "update";
-        
+
         switch (display) {
             case "bookings":
-                  
+
                 choice = "Seats";
-                
+
                 Choices cho = new Choices();
                 cho.something = "update";
+                cho.setVisible(false);
+                
+                cho.dispose();
+                cho = new Choices();
+                cho.something = "update";
                 cho.setVisible(true);
+                
                 break;
             case "customers":
-                
-                  if (cmbCustomer.getSelectedItem().toString().equals("All")) {
-                      JOptionPane.showMessageDialog(null, "Invalid Customer ID.");
-                  } else {
-                
-                AccountCreation acc = new AccountCreation();
-                acc.something = "update";
-                acc.setVisible(true);
-                  }
+
+                if (cmbCustomer.getSelectedItem().toString().equals("All")) {
+                    JOptionPane.showMessageDialog(null, "Invalid Customer ID.");
+                } else {
+
+                    AccountCreation acc = new AccountCreation();
+                    acc.something = "update";
+                    acc.setVisible(true);
+                }
                 break;
             default:
                 break;
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void cmbCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCustomerActionPerformed
+    private void btnDisplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisplayActionPerformed
+
+        switch (display) {
+
+            case "customers":
+
+                display = "bookings";
+
+                break;
+            case "bookings":
+
+                display = "customers";
+
+                break;
+            default:
+                break;
+
+        }
+
         fillBox();
-        
+    }//GEN-LAST:event_btnDisplayActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        deleteRecord();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void cmbCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCustomerActionPerformed
+         fillBox();
+
         if (cmbCustomer.getSelectedItem().toString().equals("All")) {
-            
+
         } else {
             userID = Integer.valueOf(cmbCustomer.getSelectedItem().toString());
         }
-       
     }//GEN-LAST:event_cmbCustomerActionPerformed
 
     private void cmbBookingIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbBookingIDActionPerformed
@@ -378,229 +402,251 @@ public class BookingSystem extends javax.swing.JFrame {
     private static javax.swing.JLabel lblSort;
     // End of variables declaration//GEN-END:variables
 
-    
     public static void logIN(String userName, String passWord) {
-        
-        
-        try {
-        factory = new Configuration().configure().buildSessionFactory();
-                
-        Session session = factory.openSession();
-        Transaction tx = null;
 
         try {
-            tx = session.beginTransaction();
+            factory = new Configuration().configure().buildSessionFactory();
 
-            Criteria critC = null;
-            Criteria critM = null;
-            List stuff = null;
-            
-            
-        
-                    critC = session.createCriteria(POJOS.Customers.class);
-                    critC.add(Restrictions.eq("username", userName));
-                    critC.add(Restrictions.eq("password", passWord));
-                    
-                    stuff = critC.list();
-                    if (stuff.size() > 0) {
-                        for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
-                            POJOS.Customers acc = (POJOS.Customers) iterator.next();
-                           userID = acc.getCustomerId(); 
-                        
-                        }
-                        isManager = false;
-                        
-                        BookingSystem bank = new BookingSystem();
-                        Login.userID = userID;
-                        bank.userID = Login.userID;
-                        bank.setVisible(true);
-                    
-                    }else {
-                        
-                        critM = session.createCriteria(POJOS.Managers.class);
-                        critM.add(Restrictions.eq("username", userName));
+            Session session = factory.openSession();
+            Transaction tx = null;
+
+            try {
+                tx = session.beginTransaction();
+
+                Criteria critC = null;
+                Criteria critM = null;
+                List stuff = null;
+
+                critC = session.createCriteria(POJOS.Customers.class);
+                critC.add(Restrictions.eq("username", userName));
+                critC.add(Restrictions.eq("password", passWord));
+
+                stuff = critC.list();
+                if (stuff.size() > 0) {
+                    for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
+                        POJOS.Customers acc = (POJOS.Customers) iterator.next();
+                        userID = acc.getCustomerId();
+
+                    }
+                    isManager = false;
+
+                    BookingSystem bank = new BookingSystem();
+                    Login.userID = userID;
+                    bank.userID = Login.userID;
+                    bank.setVisible(true);
+
+                } else {
+
+                    critM = session.createCriteria(POJOS.Managers.class);
+                    critM.add(Restrictions.eq("username", userName));
                     critM.add(Restrictions.eq("password", passWord));
-                        
-                        stuff = critM.list();
+
+                    stuff = critM.list();
                     if (stuff.size() > 0) {
                         for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
                             POJOS.Managers man = (POJOS.Managers) iterator.next();
-                           userID = man.getManagerId(); 
-                           
+                            userID = man.getManagerId();
+
                         }
                         isManager = true;
-                       
+
                         BookingSystem bank = new BookingSystem();
                         Login.userID = userID;
                         bank.userID = Login.userID;
                         bank.setVisible(true);
-                       
-           
-                        
-                    }}
-                    if (stuff.size() == 0) {
-                        JOptionPane.showMessageDialog(null, "Invalid login credentials.");
+
                     }
-        tx.commit();
-        }
-        
-        catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
+                }
+                if (stuff.size() == 0) {
+                    JOptionPane.showMessageDialog(null, "Invalid login credentials.");
+                }
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) {
+                    tx.rollback();
+                }
+                e.printStackTrace();
+            } finally {
+                session.close();
             }
-            e.printStackTrace();
-        } finally {
-            session.close();
+
+        } catch (Throwable ex) {
+            System.err.println("An Error has occurred");
+            throw new ExceptionInInitializerError(ex);
         }
-                
-            } catch (Throwable ex) {
-                System.err.println("An Error has occurred");
-                throw new ExceptionInInitializerError(ex);
-            }
-    
+
     }
-    
-    
+
     public static int findLast() {
-    
+
         int lastOne = 0;
-        
-         try {
-        factory = new Configuration().configure().buildSessionFactory();
-                
-        Session session = factory.openSession();
-        Transaction tx = null;
 
         try {
-            tx = session.beginTransaction();
+            factory = new Configuration().configure().buildSessionFactory();
 
-            Criteria crit = null;
-            List stuff = null;
-            
-                    crit = session.createCriteria(POJOS.Customers.class);
-                   
-                    stuff = crit.list();
-                    if (stuff.size() > 0) {
-                        for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
-                            POJOS.Customers acc = (POJOS.Customers) iterator.next();
-                           lastOne = acc.getCustomerId(); 
-                        
-                        }
-                      
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Invalid login credentials.");
+            Session session = factory.openSession();
+            Transaction tx = null;
+
+            try {
+                tx = session.beginTransaction();
+
+                Criteria crit = null;
+                List stuff = null;
+
+                crit = session.createCriteria(POJOS.Customers.class);
+
+                stuff = crit.list();
+                if (stuff.size() > 0) {
+                    for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
+                        POJOS.Customers acc = (POJOS.Customers) iterator.next();
+                        lastOne = acc.getCustomerId();
+
                     }
-        tx.commit();
-        }
-        
-        catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid login credentials.");
+                }
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) {
+                    tx.rollback();
+                }
+                e.printStackTrace();
+            } finally {
+                session.close();
             }
-            e.printStackTrace();
-        } finally {
-            session.close();
+
+        } catch (Throwable ex) {
+            System.err.println("An Error has occurred");
+            throw new ExceptionInInitializerError(ex);
         }
-                
-            } catch (Throwable ex) {
-                System.err.println("An Error has occurred");
-                throw new ExceptionInInitializerError(ex);
-            }
-         
-         return lastOne;
-        
+
+        return lastOne;
+
     }
-    
-    
+
     public static void inSERT(int idNum, String userName, String passWord, String name) {
-        
-        try {
-        factory = new Configuration().configure().buildSessionFactory();
-                
-        Session session = factory.openSession();
-        Transaction tx = null;
 
         try {
-            tx = session.beginTransaction();
-            
-            
-            POJOS.Customers acc = new POJOS.Customers(idNum, name, passWord, userName);
-                
-                    session.save(acc);
-                    tx.commit();
-                    
-                    JOptionPane.showMessageDialog(null, "Account successfully created.");
-                    
-        }  catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
+            factory = new Configuration().configure().buildSessionFactory();
+
+            Session session = factory.openSession();
+            Transaction tx = null;
+
+            try {
+                tx = session.beginTransaction();
+
+                POJOS.Customers acc = new POJOS.Customers(idNum, name, passWord, userName);
+
+                session.save(acc);
+                tx.commit();
+
+                JOptionPane.showMessageDialog(null, "Account successfully created.");
+
+            } catch (HibernateException e) {
+                if (tx != null) {
+                    tx.rollback();
+                }
+                e.printStackTrace();
+            } finally {
+                session.close();
             }
-            e.printStackTrace();
-        } finally {
-            session.close();
+
+        } catch (Throwable ex) {
+            System.err.println("An Error has occurred");
+            throw new ExceptionInInitializerError(ex);
         }
-                
-            } catch (Throwable ex) {
-                System.err.println("An Error has occurred");
-                throw new ExceptionInInitializerError(ex);
-            }
-    
+
     }
 
     public static void printBookings(int id) {
         factory = new Configuration().configure().buildSessionFactory();
-         Session session = factory.openSession();
+        Session session = factory.openSession();
         Transaction tx = null;
 
         DefaultTableModel model = null;
-            model = new DefaultTableModel(new String[]{"Booking ID", "Customer", "Movie", "Cinema", "Time", "Seat"}, 0);
+        model = new DefaultTableModel(new String[]{"Booking ID", "Customer", "Movie", "Cinema", "Location", "Province", "Time", "Seat"}, 0);
         jTable1.setModel(model);
+        
+        jTable1.setRowSorter(null);
         try {
             tx = session.beginTransaction();
 
             List stuff = null;
-          
-            String hql = "FROM POJOS.Bookings WHERE customer = '" + id + "'";
-            
-                
-             switch (cmbOrder.getSelectedIndex()) {
-            case 0:
-                hql += " ORDER BY bookingID ASC";
-                break;
-            case 1:
-                hql += " ORDER BY customer ASC";
-                break;
-            case 2:
-                hql += " ORDER BY cinema ASC";
-                break;
-            case 3:
-                hql += " ORDER BY movie ASC";
-                break;
-            case 4:
-                hql += " ORDER BY seat ASC";
-                break;
-            default:
-                return;
 
-        }    
-             Query query = session.createQuery(hql);
+            String hql = "FROM POJOS.Bookings WHERE customer = '" + id + "'";
+
+            switch (cmbOrder.getSelectedIndex()) {
+                case 0:
+                    hql += " ORDER BY bookingID ASC";
+                    break;
+                case 1:
+                    hql += " ORDER BY customer ASC";
+                    break;
+                case 2:
+                    hql += " ORDER BY cinema ASC";
+                    break;
+                case 3:
+                    hql += " ORDER BY movie ASC";
+                    break;
+                case 4:
+                    hql += " ORDER BY seat ASC";
+                    break;
+                case 5:
+                    hql += " ORDER BY bookingID ASC";
+                    Query query = session.createQuery(hql);
+                    stuff = query.list();
+
+                    if (stuff.size() > 0) {
+
+                        for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
+
+                            POJOS.Bookings list = (POJOS.Bookings) iterator.next();
+                            model.addRow(new Object[]{list.getBookingId(), list.getCustomers().getName(), list.getMovies().getName(), 
+                                list.getCinema().getName(), list.getCinema().getLocation(), list.getCinema().getProvince(), list.getTime(), list.getSeat()});
+                        }
+                        jTable1.setModel(model);
+
+                        
+                        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable1.getModel());
+                        jTable1.setRowSorter(sorter);
+
+                        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+                        sortKeys.add(new RowSorter.SortKey(5, SortOrder.ASCENDING));
+
+                        sorter.setSortKeys(sortKeys);
+                        jTable1.getTableHeader().setEnabled(false);
+                        sorter.setSortsOnUpdates(false);
+                       
+                    }
+                    else{
+                        jTable1.setRowSorter(null);
+                    }
+                     tx.commit();
+                    break;
+                default:
+                    return;
+
+            }
+            if(cmbOrder.getSelectedIndex() != 5){
+            Query query = session.createQuery(hql);
             stuff = query.list();
-           
-     
+
             if (stuff.size() > 0) {
 
                 for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
 
                     POJOS.Bookings list = (POJOS.Bookings) iterator.next();
-                    model.addRow(new Object[]{list.getBookingId(), list.getCustomers().getName(), list.getMovies().getName(), list.getCinema().getName(), list.getTime(), list.getSeat()});
+                    model.addRow(new Object[]{list.getBookingId(), list.getCustomers().getName(), list.getMovies().getName(), list.getCinema().getName(),
+                        list.getCinema().getLocation(), list.getCinema().getProvince(), list.getTime(), list.getSeat()});
                 }
                 jTable1.setModel(model);
 
             } else {
-                
+
             }
             tx.commit();
-
+            }
         } catch (HibernateException e) {
             if (tx != null) {
                 tx.rollback();
@@ -609,63 +655,99 @@ public class BookingSystem extends javax.swing.JFrame {
         } finally {
             session.close();
         }
-        
+
     }
-    
+
     public static void printAll() {
         factory = new Configuration().configure().buildSessionFactory();
-         Session session = factory.openSession();
+        Session session = factory.openSession();
         Transaction tx = null;
-
+        
+        jTable1.setRowSorter(null);
         try {
             tx = session.beginTransaction();
 
-            
             List stuff = null;
             DefaultTableModel model = null;
-            model = new DefaultTableModel(new String[]{"Booking ID", "Customer", "Movie", "Cinema", "Time", "Seat"}, 0);
-            
+            model = new DefaultTableModel(new String[]{"Booking ID", "Customer", "Movie", "Cinema", "Location", "Province", "Time", "Seat"}, 0);
 
             String hql = "FROM POJOS.Bookings";
-            
-                
-             switch (cmbOrder.getSelectedIndex()) {
-            case 0:
-                hql += " ORDER BY bookingID ASC";
-                break;
-            case 1:
-                hql += " ORDER BY customer ASC";
-                break;
-            case 2:
-                hql += " ORDER BY cinema ASC";
-                break;
-            case 3:
-                hql += " ORDER BY movie ASC";
-                break;
-            case 4:
-                hql += " ORDER BY seat ASC";
-                break;
-            default:
-                return;
 
-        }    
-             Query query = session.createQuery(hql);
+            switch (cmbOrder.getSelectedIndex()) {
+                case 0:
+                    hql += " ORDER BY bookingID ASC";
+                    break;
+                case 1:
+                    hql += " ORDER BY customer ASC";
+                    break;
+                case 2:
+                    hql += " ORDER BY cinema ASC";
+                    break;
+                case 3:
+                    hql += " ORDER BY movie ASC";
+                    break;
+                case 4:
+                    hql += " ORDER BY seat ASC";
+                    break;
+                case 5:
+                    hql += " ORDER BY bookingID ASC";
+                    Query query = session.createQuery(hql);
+                    stuff = query.list();
+
+                    if (stuff.size() > 0) {
+
+                        for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
+
+                            POJOS.Bookings list = (POJOS.Bookings) iterator.next();
+                            model.addRow(new Object[]{list.getBookingId(), list.getCustomers().getName(), list.getMovies().getName(), list.getCinema().getName(), 
+                                list.getCinema().getLocation(), list.getCinema().getProvince(),
+                                list.getTime(), list.getSeat()
+                            });
+                        }
+                        jTable1.setModel(model);
+
+                        
+                        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(jTable1.getModel());
+                        jTable1.setRowSorter(sorter);
+
+                        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+                        sortKeys.add(new RowSorter.SortKey(5, SortOrder.ASCENDING));
+
+                        sorter.setSortKeys(sortKeys);
+                        jTable1.getTableHeader().setEnabled(false);
+                        sorter.setSortsOnUpdates(false);
+                    }
+                    else{
+                        jTable1.setRowSorter(null);
+                    }
+                    tx.commit();
+                     
+                    break;
+                default:
+                    return;
+
+            }
+            if(cmbOrder.getSelectedIndex() != 5){
+            
+            
+            Query query = session.createQuery(hql);
             stuff = query.list();
-           
+
             if (stuff.size() > 0) {
 
                 for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
 
                     POJOS.Bookings list = (POJOS.Bookings) iterator.next();
-                    model.addRow(new Object[]{list.getBookingId(), list.getCustomers().getName(), list.getMovies().getName(), list.getCinema().getName(), list.getTime(), list.getSeat()});
+                    model.addRow(new Object[]{list.getBookingId(), list.getCustomers().getName(), list.getMovies().getName(), list.getCinema().getName(),
+                        list.getCinema().getLocation(), list.getCinema().getProvince(), list.getTime(), list.getSeat()});
                 }
                 jTable1.setModel(model);
-
-            } else {
                 
+            } else {
+
             }
             tx.commit();
-
+            }
         } catch (HibernateException e) {
             if (tx != null) {
                 tx.rollback();
@@ -674,58 +756,55 @@ public class BookingSystem extends javax.swing.JFrame {
         } finally {
             session.close();
         }
-        
+
     }
-    
+
     public static void fillBox() {
-       
+
         switch (display) {
-        
-            case "customers": 
+
+            case "customers":
                 lblSort.setVisible(false);
                 cmbOrder.setVisible(false);
                 btnDisplay.setText("Booking Details");
-                
+
                 if (isManager == true) {
                     cmbBookingID.setVisible(false);
                     lblBookingID.setVisible(false);
                 }
-                
+
                 btnUpdate.setText("Update Customer");
                 btnDelete.setText("Delete Customer");
-                
+
                 if (isManager == true) {
                     if (cmbCustomer.getSelectedItem().toString().equals("All")) {
                         printCustomers();
                     } else {
                         printIndividualCustomer(Integer.valueOf(cmbCustomer.getSelectedItem().toString()));
                     }
-                    
+
                 } else {
                     printIndividualCustomer(userID);
                 }
-                
-                
-                
-                
+
                 break;
-            case "bookings": 
+            case "bookings":
                 lblSort.setVisible(true);
                 cmbOrder.setVisible(true);
                 btnDisplay.setText("Customer Details");
-                
+
                 if (isManager == true) {
                     cmbBookingID.setVisible(true);
                     lblBookingID.setVisible(true);
                 }
-                
+
                 btnUpdate.setText("Update Booking");
                 btnDelete.setText("Delete Booking");
-                
+
                 if (isManager == true) {
                     if (cmbCustomer.getSelectedItem().toString().equals("All")) {
                         printAll();
-                    } else {   
+                    } else {
                         printBookings(Integer.valueOf(cmbCustomer.getSelectedItem().toString()));
                     }
                 } else {
@@ -733,376 +812,370 @@ public class BookingSystem extends javax.swing.JFrame {
                 }
                 break;
             default:
-                    break;
-            
+                break;
+
         }
-    
+
     }
-    
-        public static void printCustomers() {
-    
-         try {
-        factory = new Configuration().configure().buildSessionFactory();
-                
-        Session session = factory.openSession();
-        Transaction tx = null;
+
+    public static void printCustomers() {
 
         try {
-            tx = session.beginTransaction();
+            factory = new Configuration().configure().buildSessionFactory();
+
+            Session session = factory.openSession();
+            Transaction tx = null;
             
-            Criteria crit = null;
-            List stuff = null;
-            
-            DefaultTableModel model = null;
-            model = new DefaultTableModel(new String[]{"Customer ID", "Name", "Username", "Password"}, 0);
-            
-            crit = session.createCriteria(POJOS.Customers.class);
-            stuff = crit.list();
-            
-            for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
+            jTable1.setRowSorter(null);
+            try {
+                tx = session.beginTransaction();
+
+                Criteria crit = null;
+                List stuff = null;
+
+                DefaultTableModel model = null;
+                model = new DefaultTableModel(new String[]{"Customer ID", "Name", "Username", "Password"}, 0);
+
+                crit = session.createCriteria(POJOS.Customers.class);
+                stuff = crit.list();
+
+                for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
 
                     POJOS.Customers list = (POJOS.Customers) iterator.next();
-                    
+
                     model.addRow(new Object[]{list.getCustomerId(), list.getName(), list.getUsername(), list.getPassword()});
+                }
+
+                jTable1.setModel(model);
+
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) {
+                    tx.rollback();
+                }
+                e.printStackTrace();
+            } finally {
+                session.close();
             }
-            
-             jTable1.setModel(model);
-            
-                   tx.commit();
-        }  catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
+
+        } catch (Throwable ex) {
+            System.err.println("An Error has occurred");
+            throw new ExceptionInInitializerError(ex);
         }
-                
-            } catch (Throwable ex) {
-                System.err.println("An Error has occurred");
-                throw new ExceptionInInitializerError(ex);
-            }
-            
-        
-        
-        
+
     }
-        
+
     public static void printIndividualCustomer(int customer) {
-    
-         try {
-        factory = new Configuration().configure().buildSessionFactory();
-                
-        Session session = factory.openSession();
-        Transaction tx = null;
 
         try {
-            tx = session.beginTransaction();
-        
-            List stuff = null;
-            
-            DefaultTableModel model = null;
-             model = new DefaultTableModel(new String[]{"Customer ID", "Name", "Username", "Password"}, 0);
-            
-            String hql = "FROM POJOS.Customers WHERE customerID = " + customer;
-            Query query = session.createQuery(hql);
-            stuff = query.list();
-            
-            for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
+            factory = new Configuration().configure().buildSessionFactory();
+
+            Session session = factory.openSession();
+            Transaction tx = null;
+            jTable1.setRowSorter(null);
+            try {
+                tx = session.beginTransaction();
+
+                List stuff = null;
+
+                DefaultTableModel model = null;
+                model = new DefaultTableModel(new String[]{"Customer ID", "Name", "Username", "Password"}, 0);
+
+                String hql = "FROM POJOS.Customers WHERE customerID = '" + customer+"'";
+                Query query = session.createQuery(hql);
+                stuff = query.list();
+                
+                for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
 
                     POJOS.Customers list = (POJOS.Customers) iterator.next();
-                   
+
                     model.addRow(new Object[]{list.getCustomerId(), list.getName(), list.getUsername(), list.getPassword()});
-            }
-            
-             jTable1.setModel(model);
-            
-                   tx.commit();
-        }  catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
+                }
                 
-            } catch (Throwable ex) {
-                System.err.println("An Error has occurred");
-                throw new ExceptionInInitializerError(ex);
+                jTable1.setModel(model);
+
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) {
+                    tx.rollback();
+                }
+                e.printStackTrace();
+            } finally {
+                session.close();
             }
-            
-        
-        
-        
+
+        } catch (Throwable ex) {
+            System.err.println("An Error has occurred");
+            throw new ExceptionInInitializerError(ex);
+        }
+
     }
-    
+
     public static void printIndividualCustomerBookings(int customer) {
-    
-         try {
-        factory = new Configuration().configure().buildSessionFactory();
-                
-                Session session = factory.openSession();
-        Transaction tx = null;
 
         try {
-            tx = session.beginTransaction();
-            
-           
-            List stuff = null;
-            
-            DefaultTableModel model = null;
-            model = new DefaultTableModel(new String[]{"Customer ID", "Name", "Username", "Password"}, 0);
-            
-            String hql = "FROM POJOS.Customers WHERE customerID = " + customer;
-            Query query = session.createQuery(hql);
-            stuff = query.list();
-            
-            for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
+            factory = new Configuration().configure().buildSessionFactory();
+
+            Session session = factory.openSession();
+            Transaction tx = null;
+
+            try {
+                tx = session.beginTransaction();
+
+                List stuff = null;
+
+                DefaultTableModel model = null;
+                model = new DefaultTableModel(new String[]{"Customer ID", "Name", "Username", "Password"}, 0);
+
+                String hql = "FROM POJOS.Customers WHERE customerID = " + customer;
+                Query query = session.createQuery(hql);
+                stuff = query.list();
+                jTable1.getRowSorter().setSortKeys(null);
+                for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
 
                     POJOS.Customers list = (POJOS.Customers) iterator.next();
-             
+
                     model.addRow(new Object[]{list.getCustomerId(), list.getName(), list.getUsername(), list.getPassword()});
+                }
+
+                jTable1.setModel(model);
+
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) {
+                    tx.rollback();
+                }
+                e.printStackTrace();
+            } finally {
+                session.close();
             }
-            
-             jTable1.setModel(model);
-            
-                   tx.commit();
-        }  catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
+
+        } catch (Throwable ex) {
+            System.err.println("An Error has occurred");
+            throw new ExceptionInInitializerError(ex);
         }
-                
-            } catch (Throwable ex) {
-                System.err.println("An Error has occurred");
-                throw new ExceptionInInitializerError(ex);
-            }
-            
-        
-        
-        
+
     }
-        
+
     public static void deleteRecord() {
-        
+
         switch (display) {
-        
+
             case "customers":
- 
-                
+
                 deleteCustomer(Integer.valueOf(cmbCustomer.getSelectedItem().toString()));
+            //    cmbCustomer.removeAllItems();
+                //customerBox();
+               // cmbCustomer.setSelectedIndex(0);
                 fillBox();
                 
                 break;
             case "bookings":
-                
-                
-                deleteBooking(Integer.valueOf(cmbBookingID.getSelectedItem().toString()));    
-                
+
+                deleteBooking(Integer.valueOf(cmbBookingID.getSelectedItem().toString()));
+
                 fillBox();
-  
+
                 break;
             default:
-                    break;
-            
+                break;
+
         }
-        
+
     }
-    
-    
+
     public static void deleteCustomer(int id) {
-    
-         try {
-        factory = new Configuration().configure().buildSessionFactory();
-                
-                Session session = factory.openSession();
-        Transaction tx = null;
 
         try {
-            tx = session.beginTransaction();
-            POJOS.Customers del = (POJOS.Customers) session.get(POJOS.Customers.class, id);
-                    session.delete(del);
-                    tx.commit();
-                } catch (HibernateException e) {
-                    if (tx != null) {
-                        tx.rollback();
-                    }
-                    e.printStackTrace();
-                } finally {
-                    session.close();
-        }} catch (Throwable ex) {
-                System.err.println("An Error has occurred");
-                throw new ExceptionInInitializerError(ex);
+            factory = new Configuration().configure().buildSessionFactory();
+
+            Session session = factory.openSession();
+            Transaction tx = null;
+
+            try {
+                tx = session.beginTransaction();
+                POJOS.Customers del = (POJOS.Customers) session.get(POJOS.Customers.class, id);
+                session.delete(del);
+                tx.commit();
+                cmbCustomer.removeItemAt(cmbCustomer.getSelectedIndex());
+                cmbBookingID.removeAllItems();
+                bookingBox();
+                
+            } catch (HibernateException e) {
+                if (tx != null) {
+                    tx.rollback();
+                }
+                e.printStackTrace();
+            } finally {
+                session.close();
             }
-    
+        } catch (Throwable ex) {
+            System.err.println("An Error has occurred");
+            throw new ExceptionInInitializerError(ex);
+        }
+
     }
-    
+
     public static void deleteBooking(int id) {
-        
-         try {
-        factory = new Configuration().configure().buildSessionFactory();
-                
-                Session session = factory.openSession();
-        Transaction tx = null;
 
         try {
-            tx = session.beginTransaction();
-            POJOS.Bookings del = (POJOS.Bookings) session.get(POJOS.Bookings.class, id);
-                    session.delete(del);
-                    tx.commit();
-                } catch (HibernateException e) {
-                    if (tx != null) {
-                        tx.rollback();
-                    }
-                    e.printStackTrace();
-                } finally {
-                    session.close();
-        }} catch (Throwable ex) {
-                System.err.println("An Error has occurred");
-                throw new ExceptionInInitializerError(ex);
+            factory = new Configuration().configure().buildSessionFactory();
+
+            Session session = factory.openSession();
+            Transaction tx = null;
+
+            try {
+                tx = session.beginTransaction();
+                POJOS.Bookings del = (POJOS.Bookings) session.get(POJOS.Bookings.class, id);
+                session.delete(del);
+                tx.commit();
+                cmbBookingID.removeItemAt(cmbBookingID.getSelectedIndex());
+                
+            } catch (HibernateException e) {
+                if (tx != null) {
+                    tx.rollback();
+                }
+                e.printStackTrace();
+            } finally {
+                session.close();
             }
-        
+        } catch (Throwable ex) {
+            System.err.println("An Error has occurred");
+            throw new ExceptionInInitializerError(ex);
+        }
+
     }
-    
+
     public static void updateCustomer(int id, String name, String username, String password) {
-    
-        try {
-        factory = new Configuration().configure().buildSessionFactory();
-                
-                Session session = factory.openSession();
-        Transaction tx = null;
 
         try {
-            tx = session.beginTransaction();
-            POJOS.Customers cust = (POJOS.Customers) session.get(POJOS.Customers.class, id);
-                   
-                    
-                    cust.setName(name);
-                    cust.setUsername(username);
-                    cust.setPassword(password);
-                    
-                    session.update(cust);
-                    tx.commit();
-                } catch (HibernateException e) {
-                    if (tx != null) {
-                        tx.rollback();
-                    }
-                    e.printStackTrace();
-                } finally {
-                    session.close();
-        }} catch (Throwable ex) {
-                System.err.println("An Error has occurred");
-                throw new ExceptionInInitializerError(ex);
+            factory = new Configuration().configure().buildSessionFactory();
+
+            Session session = factory.openSession();
+            Transaction tx = null;
+
+            try {
+                tx = session.beginTransaction();
+                POJOS.Customers cust = (POJOS.Customers) session.get(POJOS.Customers.class, id);
+
+                cust.setName(name);
+                cust.setUsername(username);
+                cust.setPassword(password);
+
+                session.update(cust);
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) {
+                    tx.rollback();
+                }
+                e.printStackTrace();
+            } finally {
+                session.close();
             }
-        
+        } catch (Throwable ex) {
+            System.err.println("An Error has occurred");
+            throw new ExceptionInInitializerError(ex);
+        }
+
     }
-    
-    public static void boxCinema() { 
-    
+
+    public static void customerBox() {
+
         int answer = 0;
-        
-         try {
-        factory = new Configuration().configure().buildSessionFactory();
-                
-                Session session = factory.openSession();
-        Transaction tx = null;
 
         try {
-            tx = session.beginTransaction();
-            
-            Criteria crit = null;
-            List stuff = null;
-            
-            crit = session.createCriteria(POJOS.Customers.class);
-            stuff = crit.list();
-            
-            for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
+            factory = new Configuration().configure().buildSessionFactory();
+
+            Session session = factory.openSession();
+            Transaction tx = null;
+
+            try {
+                tx = session.beginTransaction();
+
+                Criteria crit = null;
+                List stuff = null;
+
+                crit = session.createCriteria(POJOS.Customers.class);
+                stuff = crit.list();
+
+                for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
 
                     POJOS.Customers list = (POJOS.Customers) iterator.next();
-                    
+
                     answer = list.getCustomerId();
                     cmbCustomer.addItem(String.valueOf(answer));
+                }
+
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) {
+                    tx.rollback();
+                }
+                e.printStackTrace();
+            } finally {
+                session.close();
             }
-            
-                   tx.commit();
-        }  catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
+
+        } catch (Throwable ex) {
+            System.err.println("An Error has occurred");
+            throw new ExceptionInInitializerError(ex);
         }
-                
-            } catch (Throwable ex) {
-                System.err.println("An Error has occurred");
-                throw new ExceptionInInitializerError(ex);
-            }
-            
-        
-        
-        
+
     }
-    
+
     public static void managerRights() {
-        
-            cmbCustomer.setVisible(isManager);
-            
-            cmbBookingID.setVisible(isManager);
-            lblBookingID.setVisible(isManager);
-            btnDelete.setVisible(isManager);
-           
-            btnUpdate.setVisible(isManager);
-            lblCustomer.setVisible(isManager);
-        
+
+        cmbCustomer.setVisible(isManager);
+
+        cmbBookingID.setVisible(isManager);
+        lblBookingID.setVisible(isManager);
+        btnDelete.setVisible(isManager);
+
+        btnUpdate.setVisible(isManager);
+        lblCustomer.setVisible(isManager);
+
     }
-    
-    
+
     public static void bookingBox() {
-     int answer = 0;
-        
-         try {
-        factory = new Configuration().configure().buildSessionFactory();
-                
-                Session session = factory.openSession();
-        Transaction tx = null;
+        int answer = 0;
 
         try {
-            tx = session.beginTransaction();
-            
-            Criteria crit = null;
-            List stuff = null;
-            
-            crit = session.createCriteria(POJOS.Bookings.class);
-            stuff = crit.list();
-            
-            for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
+            factory = new Configuration().configure().buildSessionFactory();
+
+            Session session = factory.openSession();
+            Transaction tx = null;
+
+            try {
+                tx = session.beginTransaction();
+
+                Criteria crit = null;
+                List stuff = null;
+
+                crit = session.createCriteria(POJOS.Bookings.class);
+                stuff = crit.list();
+
+                for (Iterator iterator = stuff.iterator(); iterator.hasNext();) {
 
                     POJOS.Bookings list = (POJOS.Bookings) iterator.next();
-                    
+
                     answer = list.getBookingId();
                     cmbBookingID.addItem(String.valueOf(answer));
-            }
-            
-                   tx.commit();
-        }  catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-                
-            } catch (Throwable ex) {
-                System.err.println("An Error has occurred");
-                throw new ExceptionInInitializerError(ex);
-            }
-            
-    }
+                }
 
+                tx.commit();
+            } catch (HibernateException e) {
+                if (tx != null) {
+                    tx.rollback();
+                }
+                e.printStackTrace();
+            } finally {
+                session.close();
+            }
+
+        } catch (Throwable ex) {
+            System.err.println("An Error has occurred");
+            throw new ExceptionInInitializerError(ex);
+        }
+
+    }
 }

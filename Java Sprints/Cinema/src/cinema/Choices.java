@@ -36,6 +36,30 @@ public class Choices extends javax.swing.JFrame {
         boxCinema();
         chosen();
         
+        if (something.equals("update")) {
+                factory = new Configuration().configure().buildSessionFactory();
+         Session session = factory.openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            POJOS.Bookings booking = (POJOS.Bookings) session.load(POJOS.Bookings.class, Integer.valueOf(BookingSystem.cmbBookingID.getSelectedItem().toString()));
+            cmbTime.setSelectedItem(booking.getTime());
+            cmbCinema.setSelectedItem(booking.getCinema().getName());
+            cmbSeat.setSelectedItem(booking.getSeat());
+            cmbCategory.setSelectedItem(booking.getMovies().getName());
+            
+            } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+            
+        }
+        
         btnExportReceipt.setVisible(false);
         
         
@@ -52,10 +76,9 @@ public class Choices extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        lblOption = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        lblHeader = new javax.swing.JLabel();
-        lblOption = new javax.swing.JLabel();
         cmbCategory = new javax.swing.JComboBox<>();
         cmbTime = new javax.swing.JComboBox<>();
         btnSubmit = new javax.swing.JButton();
@@ -63,8 +86,18 @@ public class Choices extends javax.swing.JFrame {
         btnExportReceipt = new javax.swing.JButton();
         cmbSeat = new javax.swing.JComboBox<>();
         btnBack = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        lblHeader = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setSize(jPanel1.getPreferredSize());
+
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 0, 0), 3, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 18), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblOption.setText("Choice");
+        jPanel1.add(lblOption, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 270, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -79,121 +112,80 @@ public class Choices extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        lblHeader.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        lblHeader.setText("Choices");
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 440, 188));
 
-        lblOption.setText("Choice");
-
+        cmbCategory.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         cmbCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbCategoryActionPerformed(evt);
             }
         });
+        jPanel1.add(cmbCategory, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 250, 30));
 
+        cmbTime.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         cmbTime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "09:00", "11:30", "14:00", "16:30", "19:00" }));
         cmbTime.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbTimeActionPerformed(evt);
             }
         });
+        jPanel1.add(cmbTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 320, 80, -1));
 
+        btnSubmit.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnSubmit.setText("Submit");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSubmitActionPerformed(evt);
             }
         });
+        jPanel1.add(btnSubmit, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 360, 120, 30));
 
+        cmbCinema.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         cmbCinema.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbCinemaActionPerformed(evt);
             }
         });
+        jPanel1.add(cmbCinema, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 250, 30));
 
+        btnExportReceipt.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnExportReceipt.setText("Export Receipt");
         btnExportReceipt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExportReceiptActionPerformed(evt);
             }
         });
+        jPanel1.add(btnExportReceipt, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 360, 150, 30));
 
+        cmbSeat.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         cmbSeat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10", "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "C10", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9", "E10", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10" }));
+        jPanel1.add(cmbSeat, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 290, 60, 20));
 
+        btnBack.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnBack.setText("Back");
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBackActionPerformed(evt);
             }
         });
+        jPanel1.add(btnBack, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, 130, 30));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cmbCinema, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmbTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(cmbCategory, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnBack)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSubmit)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnExportReceipt)
-                        .addGap(2, 2, 2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblOption)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                        .addComponent(cmbSeat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(194, 194, 194)))
-                .addGap(32, 32, 32))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(154, 154, 154)
-                .addComponent(lblHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(lblHeader)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cmbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbCinema, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblOption)
-                    .addComponent(cmbSeat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(43, 43, 43)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSubmit)
-                    .addComponent(btnExportReceipt)
-                    .addComponent(btnBack))
-                .addGap(12, 12, 12))
-        );
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cinema/images (1).jpg"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 200, 300, 200));
+
+        lblHeader.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        lblHeader.setText("Choices");
+        jPanel1.add(lblHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, 77, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
         );
 
         pack();
@@ -201,21 +193,16 @@ public class Choices extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmbCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCategoryActionPerformed
-        if (BookingSystem.choice == "Movies") {  
-            moviesShow(); 
+        if (BookingSystem.choice == "Movies") {
+            moviesShow();
         }
-        
-        if (BookingSystem.choice == "Seats") { 
+
+        if (BookingSystem.choice == "Seats") {
             abomination();
             cellChanger();
         }
-       
-    }//GEN-LAST:event_cmbCategoryActionPerformed
 
-    private void cmbCinemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCinemaActionPerformed
-        abomination();
-        cellChanger();
-    }//GEN-LAST:event_cmbCinemaActionPerformed
+    }//GEN-LAST:event_cmbCategoryActionPerformed
 
     private void cmbTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTimeActionPerformed
         abomination();
@@ -223,82 +210,80 @@ public class Choices extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbTimeActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-      
-        
+
         switch(something) {
-        
+
             case "insert":
-                
-            
-                        insert();
-                        btnExportReceipt.setVisible(true);    
-                        
-                        if (BookingSystem.choice == "Movies") {  
-                            moviesShow(); 
-                        }
 
-                        if (BookingSystem.choice == "Seats") { 
-                            
-                            abomination();
-                            cellChanger();
-                        }
-                       
-                       BookingSystem.cmbOrder.setVisible(true);
-                                BookingSystem.btnDisplay.setText("Booking Details");
-                                
-                                if (BookingSystem.isManager == true) {
-                                    if (BookingSystem.cmbCustomer.getSelectedItem().toString().equals("All")) {
-                                        BookingSystem.printAll();
-                                    } else {
-                                        BookingSystem.printBookings(Integer.valueOf(BookingSystem.cmbCustomer.getSelectedItem().toString())); 
-                                        
-                                    
-                                    }} else {
-            BookingSystem.printBookings(BookingSystem.userID); 
-            
-        }
-                                
+            insert();
+            //btnExportReceipt.setVisible(true);
 
-                       
-                            
-                    break;  
+            if (BookingSystem.choice == "Movies") {
+                moviesShow();
+            }
 
-            case "update":
-                update();
-                
-                if (BookingSystem.choice == "Movies") {  
-                            moviesShow(); 
-                        }
+            if (BookingSystem.choice == "Seats") {
 
-                        if (BookingSystem.choice == "Seats") { 
-                            
-                            abomination();
-                            cellChanger();
-                        }
-                
-                            BookingSystem.cmbOrder.setVisible(true);
-                            BookingSystem.btnDisplay.setText("Booking Details");
+                abomination();
+                cellChanger();
+            }
 
-                           if (BookingSystem.isManager == true) {
-                                    if (BookingSystem.cmbCustomer.getSelectedItem().toString().equals("All")) {
-                                        BookingSystem.printAll();
-                                    } else {
-                                        BookingSystem.printBookings(Integer.valueOf(BookingSystem.cmbCustomer.getSelectedItem().toString())); 
-                                    
-                                    
-                                    }} else {
-            BookingSystem.printBookings(BookingSystem.userID); 
-        }
+            BookingSystem.cmbOrder.setVisible(true);
+            BookingSystem.btnDisplay.setText("Booking Details");
+
+            if (BookingSystem.isManager == true) {
+                if (BookingSystem.cmbCustomer.getSelectedItem().toString().equals("All")) {
+                    BookingSystem.printAll();
+                } else {
+                    BookingSystem.printBookings(Integer.valueOf(BookingSystem.cmbCustomer.getSelectedItem().toString()));
+
+                }} else {
+                    BookingSystem.printBookings(BookingSystem.userID);
+
+                }
+
                 break;
-default:JOptionPane.showMessageDialog(null, "Fail");
-        break;
 
-    }
+                case "update":
+                update();
 
+                if (BookingSystem.choice == "Movies") {
+                    moviesShow();
+                }
+
+                if (BookingSystem.choice == "Seats") {
+
+                    abomination();
+                    cellChanger();
+                }
+
+                BookingSystem.cmbOrder.setVisible(true);
+                BookingSystem.btnDisplay.setText("Booking Details");
+
+                if (BookingSystem.isManager == true) {
+                    if (BookingSystem.cmbCustomer.getSelectedItem().toString().equals("All")) {
+                        BookingSystem.printAll();
+                    } else {
+                        BookingSystem.printBookings(Integer.valueOf(BookingSystem.cmbCustomer.getSelectedItem().toString()));
+
+                    }} else {
+                        BookingSystem.printBookings(BookingSystem.userID);
+                    }
+                    break;
+                    default:JOptionPane.showMessageDialog(null, "Fail");
+                    break;
+
+                }
     }//GEN-LAST:event_btnSubmitActionPerformed
+
+    private void cmbCinemaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCinemaActionPerformed
+        abomination();
+        cellChanger();
+    }//GEN-LAST:event_cmbCinemaActionPerformed
 
     private void btnExportReceiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportReceiptActionPerformed
         export(receipt);
+        btnExportReceipt.setVisible(false);
     }//GEN-LAST:event_btnExportReceiptActionPerformed
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
@@ -345,10 +330,11 @@ default:JOptionPane.showMessageDialog(null, "Fail");
     private javax.swing.JButton btnBack;
     private static javax.swing.JButton btnExportReceipt;
     private static javax.swing.JButton btnSubmit;
-    private static javax.swing.JComboBox<String> cmbCategory;
-    private static javax.swing.JComboBox<String> cmbCinema;
-    private static javax.swing.JComboBox<String> cmbSeat;
-    private static javax.swing.JComboBox<String> cmbTime;
+    public static javax.swing.JComboBox<String> cmbCategory;
+    public static javax.swing.JComboBox<String> cmbCinema;
+    public static javax.swing.JComboBox<String> cmbSeat;
+    public static javax.swing.JComboBox<String> cmbTime;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private static javax.swing.JTable jTable1;
@@ -361,6 +347,7 @@ default:JOptionPane.showMessageDialog(null, "Fail");
             FileWriter writer = new FileWriter("Receipt.txt", false);
             writer.write(receipt);
             writer.close();
+            JOptionPane.showMessageDialog(null, "Receipt successfully exported.");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -368,7 +355,7 @@ default:JOptionPane.showMessageDialog(null, "Fail");
     
     public static void chosen() {
         
-        if (BookingSystem.choice == "Movies") {
+        if (BookingSystem.choice.equals("Movies")) {
             lblHeader.setText("Movies");
            
             lblOption.setVisible(false);
@@ -384,7 +371,7 @@ default:JOptionPane.showMessageDialog(null, "Fail");
             
         }
         
-        if (BookingSystem.choice == "Seats") {
+        if (BookingSystem.choice.equals("Seats")) {
             lblHeader.setText("Seats");
             lblOption.setText("Seat");
             
@@ -392,8 +379,8 @@ default:JOptionPane.showMessageDialog(null, "Fail");
             
             fillBox("movies");
             
-        }
-    }
+            
+    }}
     
     public static void moviesShow() {
         factory = new Configuration().configure().buildSessionFactory();
@@ -730,7 +717,7 @@ default:JOptionPane.showMessageDialog(null, "Fail");
             tx.commit();
             
             JOptionPane.showMessageDialog(null, "Booking was successful.");
-            
+            btnExportReceipt.setVisible(true);
 
           receipt = " \r\n Customer ID: " + String.valueOf(BookingSystem.userID) + " \r\n Name: " + customer.getName() + " \r\n Movie: " + movie.getName() + " \r\n Cinema: " + cinema.getName() + " \r\n Seat: " + seat + "\r\n Time: " + time;         
         } 

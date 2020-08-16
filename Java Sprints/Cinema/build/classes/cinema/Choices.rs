@@ -1,2 +1,0 @@
-cinema.Choices
-cinema.StatusColumnCellRenderer
